@@ -1,0 +1,169 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
+}
+:root {
+  --bg: #f5f6fa;
+  --text: #222;
+  --accent: #4f8cff;
+  --card: #fff;
+  --progress-bg: #e0e0e0;
+  --progress: #4f8cff;
+}
+body.dark {
+  --bg: #181a1b;
+  --text: #f5f6fa;
+  --accent: #7abaff;
+  --card: #23272e;
+  --progress-bg: #23272e;
+  --progress: #7abaff;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: var(--card);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+}
+#theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+.export-buttons button {
+  margin-left: 0.5rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.export-buttons button:hover {
+  background: #3566b8;
+}
+nav {
+  background: var(--card);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+}
+nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0 2rem;
+}
+nav li {
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: border 0.2s, color 0.2s;
+}
+nav li.active, nav li:hover {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+}
+main {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+}
+.section {
+  display: none;
+}
+.section.active {
+  display: block;
+}
+.date-range {
+  margin-bottom: 1rem;
+}
+.date-range label {
+  margin-right: 1.5rem;
+  font-size: 0.98rem;
+}
+.progress-bar-container {
+  background: var(--progress-bg);
+  border-radius: 8px;
+  height: 18px;
+  margin: 1rem 0 1.5rem 0;
+  width: 100%;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: var(--progress);
+  width: 0%;
+  transition: width 0.4s;
+}
+.checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+.checklist li {
+  display: flex;
+  align-items: center;
+  background: var(--bg);
+  margin-bottom: 0.5rem;
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  transition: background 0.2s;
+}
+.checklist li.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+.checklist input[type="checkbox"] {
+  margin-right: 1rem;
+  accent-color: var(--accent);
+}
+.checklist .edit-task {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+.add-task {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  transition: background 0.2s;
+}
+.add-task:hover {
+  background: #3566b8;
+}
+@media (max-width: 700px) {
+  main {
+    padding: 1rem;
+  }
+  nav ul {
+    flex-direction: column;
+    padding: 0;
+  }
+  nav li {
+    padding: 0.7rem 1rem;
+  }
+} 

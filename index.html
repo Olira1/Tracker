@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Learning Progress Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>AI Learning Progress Tracker</h1>
+    <button id="theme-toggle" title="Toggle dark/light mode">🌙</button>
+    <div class="export-buttons">
+      <button id="export-pdf">Export PDF</button>
+      <button id="export-json">Export JSON</button>
+    </div>
+  </header>
+  <nav>
+    <ul>
+      <li data-section="dashboard" class="active">Dashboard</li>
+      <li data-section="python">Python</li>
+      <li data-section="javascript">JavaScript</li>
+      <li data-section="react">React</li>
+      <li data-section="ielts">IELTS</li>
+      <li data-section="python-oop">Python OOP</li>
+    </ul>
+  </nav>
+  <main>
+    <section id="dashboard" class="section active">
+      <h2>Dashboard</h2>
+      <div id="dashboard-overview"></div>
+      <div id="motivation"></div>
+      <div id="daily-tip"></div>
+    </section>
+    <section id="python" class="section">
+      <h2>Python 30-Day Course</h2>
+      <div class="date-range">
+        <label>Start: <input type="date" id="python-start"></label>
+        <label>End: <input type="date" id="python-end"></label>
+      </div>
+      <div class="progress-bar-container"><div class="progress-bar" id="python-progress"></div></div>
+      <ul class="checklist" id="python-checklist"></ul>
+      <button class="add-task" data-section="python">+ Add Task</button>
+    </section>
+    <section id="javascript" class="section">
+      <h2>JavaScript 30-Day Course</h2>
+      <div class="date-range">
+        <label>Start: <input type="date" id="javascript-start"></label>
+        <label>End: <input type="date" id="javascript-end"></label>
+      </div>
+      <div class="progress-bar-container"><div class="progress-bar" id="javascript-progress"></div></div>
+      <ul class="checklist" id="javascript-checklist"></ul>
+      <button class="add-task" data-section="javascript">+ Add Task</button>
+    </section>
+    <section id="react" class="section">
+      <h2>React 30-Day Course</h2>
+      <div class="date-range">
+        <label>Start: <input type="date" id="react-start"></label>
+        <label>End: <input type="date" id="react-end"></label>
+      </div>
+      <div class="progress-bar-container"><div class="progress-bar" id="react-progress"></div></div>
+      <ul class="checklist" id="react-checklist"></ul>
+      <button class="add-task" data-section="react">+ Add Task</button>
+    </section>
+    <section id="ielts" class="section">
+      <h2>IELTS 60-Day Prep</h2>
+      <div class="date-range">
+        <label>Start: <input type="date" id="ielts-start"></label>
+        <label>End: <input type="date" id="ielts-end"></label>
+      </div>
+      <div class="progress-bar-container"><div class="progress-bar" id="ielts-progress"></div></div>
+      <div id="ielts-sections">
+        <h3>Reading</h3>
+        <ul class="checklist" id="ielts-reading"></ul>
+        <button class="add-task" data-section="ielts-reading">+ Add Task</button>
+        <h3>Writing</h3>
+        <ul class="checklist" id="ielts-writing"></ul>
+        <button class="add-task" data-section="ielts-writing">+ Add Task</button>
+        <h3>Listening</h3>
+        <ul class="checklist" id="ielts-listening"></ul>
+        <button class="add-task" data-section="ielts-listening">+ Add Task</button>
+        <h3>Speaking</h3>
+        <ul class="checklist" id="ielts-speaking"></ul>
+        <button class="add-task" data-section="ielts-speaking">+ Add Task</button>
+      </div>
+    </section>
+    <section id="python-oop" class="section">
+      <h2>Python OOP 7-Day Challenge</h2>
+      <div class="date-range">
+        <label>Start: <input type="date" id="python-oop-start"></label>
+        <label>End: <input type="date" id="python-oop-end"></label>
+      </div>
+      <div class="progress-bar-container"><div class="progress-bar" id="python-oop-progress"></div></div>
+      <ul class="checklist" id="python-oop-checklist"></ul>
+      <button class="add-task" data-section="python-oop">+ Add Task</button>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html> 
