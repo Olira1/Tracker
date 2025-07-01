@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 // --- Data Model ---
 const TRACKS = {
-  python: { name: 'Python 30-Day', days: 30, checklistId: 'python-checklist', progressId: 'python-progress', startId: 'python-start', endId: 'python-end', tips: [
+  python: { name: 'Python 7-Day', days: 7, checklistId: 'python-checklist', progressId: 'python-progress', startId: 'python-start', endId: 'python-end', tips: [
     'Practice daily, even if just 20 minutes.',
     'Try to build a mini-project every week.',
     'Review yesterday\'s code before starting new tasks.'
@@ -37,7 +37,47 @@ const TRACKS = {
     'Practice each section daily.',
     'Record yourself for speaking practice.',
     'Read news articles for reading practice.'
-  ], sections: ['reading', 'writing', 'listening', 'speaking'] }
+  ], sections: ['reading', 'writing', 'listening', 'speaking'] },
+  'dsa': { name: 'DSA 60-Day Challenge', days: 60, checklistId: 'dsa-checklist', progressId: 'dsa-progress', startId: 'dsa-start', endId: 'dsa-end', tips: [
+    'Practice DSA problems daily.',
+    'Focus on understanding algorithms and data structures.',
+    'Review and optimize your solutions.'
+  ], codeLinks: [
+    'https://leetcode.com/problemset/all/',
+    'https://www.geeksforgeeks.org/data-structures/'
+  ] },
+  'smma': { name: 'Social Media Marketing Agency (SMMA) 60-Day Challenge', days: 60, checklistId: 'smma-checklist', progressId: 'smma-progress', startId: 'smma-start', endId: 'smma-end', tips: [
+    'Engage with your audience daily.',
+    'Analyze campaign performance regularly.',
+    'Stay updated with social media trends.'
+  ], codeLinks: [
+    'https://www.socialmediaexaminer.com/',
+    'https://buffer.com/library/social-media-marketing/'
+  ] },
+  'js-oop': { name: 'JavaScript OOP 7-Day Challenge', days: 7, checklistId: 'js-oop-checklist', progressId: 'js-oop-progress', startId: 'js-oop-start', endId: 'js-oop-end', tips: [
+    'Practice creating classes and objects.',
+    'Understand prototypal inheritance.',
+    'Refactor code to use OOP principles.'
+  ], codeLinks: [
+    'https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object-oriented_JS',
+    'https://www.freecodecamp.org/news/object-oriented-programming-in-javascript/'
+  ] },
+  'bible-study': { name: 'Bible Study 60-Day', days: 60, checklistId: 'bible-study-checklist', progressId: 'bible-study-progress', startId: 'bible-study-start', endId: 'bible-study-end', tips: [
+    'Read a passage daily and reflect on its meaning.',
+    'Take notes and journal your thoughts.',
+    'Discuss insights with a study group or partner.'
+  ], codeLinks: [
+    'https://www.bible.com/reading-plans',
+    'https://www.biblestudytools.com/bible-reading-plan/'
+  ] },
+  'ms': { name: 'MS 60-Day Tracker', days: 60, checklistId: 'ms-checklist', progressId: 'ms-progress', startId: 'ms-start', endId: 'ms-end', tips: [
+    'Set clear daily goals for your MS journey.',
+    'Track your progress and adjust as needed.',
+    'Celebrate milestones and stay motivated.'
+  ], codeLinks: [
+    'https://www.nationalmssociety.org/',
+    'https://www.mssociety.org.uk/care-and-support/everyday-living/keeping-active'
+  ] },
 };
 
 const MOTIVATION = [
