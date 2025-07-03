@@ -21,6 +21,7 @@
     @media (max-width: 900px) { .notes-main { flex-direction: column; gap: 1rem; } .notes-preview { max-height: 40vh; } }
     @media (max-width: 700px) { body { padding: 1rem; } }
   </style>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
 </head>
 <body>
   <div class="notes-title">📝 Notes</div>
@@ -31,15 +32,21 @@
     <button id="export-notes">Export</button>
     <span class="saved-msg" id="saved-msg" style="display:none;">Saved!</span>
   </div>
+  <div class="notes-formatting" style="margin-bottom:0.7rem;">
+    <button type="button" id="h1-btn">H1</button>
+    <button type="button" id="h2-btn">H2</button>
+    <button type="button" id="font-inc">A+</button>
+    <button type="button" id="font-dec">A-</button>
+    <button type="button" id="emoji-btn" title="Insert emoji">😊</button>
+    <emoji-picker id="emoji-picker" style="display:none; position:absolute; z-index:1000;"></emoji-picker>
+  </div>
   <div class="notes-main">
-    <div class="notes-edit">
-      <textarea id="notes" placeholder="Write your notes here with markdown..."></textarea>
+    <div class="notes-edit" style="width:100%;">
+      <textarea id="notes" placeholder="Write your notes here..."></textarea>
       <button id="save-notes">Save Notes</button>
     </div>
-    <div class="notes-preview" id="notes-preview"></div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="notes.js"></script>
 </body>
-</html> 
 </html> 

@@ -257,6 +257,79 @@ body.vocab {
 @media (max-width: 700px) {
   body.vocab { padding: 1rem; }
 }
+.learned-progress-bar-container {
+  background: var(--progress-bg);
+  border-radius: 8px;
+  height: 18px;
+  margin: 1rem 0 1.5rem 0;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.learned-progress-bar {
+  height: 100%;
+  background: #4caf50;
+  width: 0%;
+  transition: width 0.4s;
+  border-radius: 8px;
+}
+.vocab-tag {
+  display: inline-block;
+  background: #e0e0e0;
+  color: #333;
+  border-radius: 6px;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.92rem;
+  margin: 0 0.2rem 0.2rem 0;
+}
+.vocab-table td.learned-yes {
+  color: #388e3c;
+  font-weight: bold;
+}
+.vocab-table td.learned-no {
+  color: #aaa;
+}
+.vocab-note {
+  font-style: italic;
+  color: #555;
+  font-size: 0.98rem;
+}
+.vocab-synonym {
+  display: inline-block;
+  background: #e3f2fd;
+  color: #1976d2;
+  border-radius: 6px;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.92rem;
+  margin: 0 0.2rem 0.2rem 0;
+}
+.vocab-antonym {
+  display: inline-block;
+  background: #ffebee;
+  color: #c62828;
+  border-radius: 6px;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.92rem;
+  margin: 0 0.2rem 0.2rem 0;
+}
+.vocab-translation {
+  display: inline-block;
+  background: #e8f5e9;
+  color: #388e3c;
+  border-radius: 6px;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.92rem;
+  margin: 0 0.2rem 0.2rem 0;
+}
+.daily-word-box {
+  background: #fffbe6;
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
 
 /* Flashcard styles */
 .flashcard {

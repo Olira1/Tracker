@@ -36,11 +36,33 @@
       <textarea id="meaning" rows="2" required></textarea>
       <label for="example">Example Sentence</label>
       <textarea id="example" rows="2" required></textarea>
+      <label for="tags">Tags (comma separated)</label>
+      <input type="text" id="tags" placeholder="e.g. Academic, Travel">
+      <label for="synonyms">Synonyms (comma separated)</label>
+      <input type="text" id="synonyms" placeholder="e.g. precise, exact">
+      <label for="antonyms">Antonyms (comma separated)</label>
+      <input type="text" id="antonyms" placeholder="e.g. careless, sloppy">
+      <label for="translations">Translations (e.g. fr:mot, es:palabra)</label>
+      <input type="text" id="translations" placeholder="fr:mot, es:palabra">
+      <label for="note">Notes / Mnemonics</label>
+      <textarea id="note" rows="2" placeholder="Your memory trick or note..."></textarea>
+      <label><input type="checkbox" id="learned"> Learned</label>
       <button type="submit">Add Word</button>
     </form>
   </div>
   <div class="search-bar">
     <input type="text" id="search" placeholder="Search words...">
+    <select id="sort-select" style="margin-left:1rem;">
+      <option value="">Sort by...</option>
+      <option value="word">Word (A-Z)</option>
+      <option value="date">Date Added</option>
+      <option value="learned">Learned Status</option>
+    </select>
+  </div>
+  <div id="daily-word-box" class="daily-word-box"></div>
+  <div class="learned-progress-bar-container">
+    <div class="learned-progress-bar" id="learned-progress-bar"></div>
+    <span id="learned-progress-label" style="margin-left:1rem;"></span>
   </div>
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
     <button id="toggle-mode">Switch to Flashcard Mode</button>
@@ -52,8 +74,15 @@
       <thead>
         <tr>
           <th>Word</th>
+          <th>🔊</th>
           <th>Meaning</th>
           <th>Example</th>
+          <th>Synonyms</th>
+          <th>Antonyms</th>
+          <th>Translations</th>
+          <th>Tags</th>
+          <th>Learned</th>
+          <th>Notes</th>
           <th>Edit</th>
           <th>Delete</th>
         </tr>

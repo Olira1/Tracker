@@ -28,6 +28,7 @@
       <li data-section="js-oop">JS OOP</li>
       <li data-section="bible-study">Bible Study</li>
       <li data-section="ms">MS</li>
+      <li data-section="documentation">Documentation</li>
     </ul>
   </nav>
   <main>
@@ -154,7 +155,12 @@
       <ul class="checklist" id="ms-checklist"></ul>
       <button class="add-task" data-section="ms">+ Add Task</button>
     </section>
+    <section id="documentation" class="section">
+      <h2>Documentation</h2>
+      <div id="documentation-content" style="white-space:pre-wrap; background:#f8f8fa; border-radius:8px; padding:1.5rem; min-height:200px;"></div>
+    </section>
   </main>
   <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </body>
 </html> 

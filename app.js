@@ -138,6 +138,7 @@ navItems.forEach(item => {
     document.getElementById(item.dataset.section).classList.add('active');
     if (item.dataset.section !== 'dashboard') renderSection(item.dataset.section);
     if (item.dataset.section === 'dashboard') renderDashboard();
+    if (item.dataset.section === 'documentation') renderDocumentation();
   });
 });
 
@@ -460,6 +461,31 @@ document.getElementById('export-json').addEventListener('click', () => {
 document.getElementById('export-pdf').addEventListener('click', () => {
   window.print();
 });
+
+// --- Documentation Tab Logic ---
+function renderDocumentation() {
+  let notes = [];
+  try {
+    notes = JSON.parse(localStorage.getItem('vocab_notes_multi')) || [];
+  } catch (e) { notes = []; }
+  const docDiv = document.getElementById('documentation-content');
+  if (!notes.length) {
+    docDiv.textContent = 'No documentation available yet.';
+    return;
+  }
+  let html = '';
+  notes.forEach((note, i) => {
+    html += `<div style="margin-bottom:2.5rem;">
+      <h3 style="margin-bottom:0.5rem;">${note.title ? note.title : 'Note ' + (i+1)}</h3>`;
+    if (window.marked) {
+      html += window.marked.parse(note.content || '');
+    } else {
+      html += `<pre>${note.content || ''}</pre>`;
+    }
+    html += '</div>';
+  });
+  docDiv.innerHTML = html;
+}
 
 // --- Initial Render ---
 Object.keys(TRACKS).forEach(renderChecklist);
