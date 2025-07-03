@@ -155,6 +155,11 @@ main {
 .add-task:hover {
   background: #3566b8;
 }
+.today-task {
+  background: #fffbe6 !important;
+  border-left: 4px solid var(--accent);
+  font-weight: bold;
+}
 @media (max-width: 700px) {
   main {
     padding: 1rem;
@@ -166,4 +171,155 @@ main {
   nav li {
     padding: 0.7rem 1rem;
   }
+}
+
+/* Vocabulary Tracker Styles */
+body.vocab {
+  max-width: 700px;
+  margin: 2rem auto;
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  padding: 2rem;
+}
+.vocab-form, .vocab-table {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.vocab-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.vocab-form input, .vocab-form textarea {
+  width: 100%;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+.vocab-form button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.vocab-form button:hover {
+  background: #3566b8;
+}
+.vocab-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.vocab-table th, .vocab-table td {
+  padding: 0.7rem;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+.vocab-table th {
+  background: var(--progress-bg);
+}
+.vocab-table tr:last-child td {
+  border-bottom: none;
+}
+.vocab-table button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  margin-right: 0.3rem;
+  transition: background 0.2s;
+}
+.vocab-table button:hover {
+  background: #3566b8;
+}
+.search-bar {
+  margin-bottom: 1.5rem;
+}
+.search-bar input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+@media (max-width: 700px) {
+  body.vocab { padding: 1rem; }
+}
+
+/* Flashcard styles */
+.flashcard {
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 2rem 1.5rem;
+  margin: 2rem auto;
+  max-width: 420px;
+  text-align: center;
+  position: relative;
+}
+.flashcard-word {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.2rem;
+}
+.flashcard-controls {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.flashcard button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  margin: 0 0.2rem;
+  transition: background 0.2s;
+}
+.flashcard button:hover {
+  background: #3566b8;
+}
+body.dark, body.vocab.dark {
+  --bg: #181a1b;
+  --text: #f5f6fa;
+  --accent: #7abaff;
+  --card: #23272e;
+  --progress-bg: #23272e;
+  --progress: #7abaff;
+  background: var(--bg);
+  color: var(--text);
+}
+body.dark .vocab-form, body.dark .vocab-table, body.vocab.dark .vocab-form, body.vocab.dark .vocab-table {
+  background: #23272e;
+}
+body.dark .flashcard, body.vocab.dark .flashcard {
+  background: #23272e;
+  color: #f5f6fa;
+}
+body.dark input, body.dark textarea, body.vocab.dark input, body.vocab.dark textarea {
+  background: #23272e;
+  color: #f5f6fa;
+  border: 1px solid #444;
+}
+body.dark table, body.vocab.dark table {
+  background: #23272e;
+  color: #f5f6fa;
+}
+body.dark th, body.vocab.dark th {
+  background: #181a1b;
 } 

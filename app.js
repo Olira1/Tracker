@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 // --- Data Model ---
 const TRACKS = {
-  python: { name: 'Python 7-Day', days: 7, checklistId: 'python-checklist', progressId: 'python-progress', startId: 'python-start', endId: 'python-end', tips: [
+  python: { name: 'Python 30-Day', days: 30, checklistId: 'python-checklist', progressId: 'python-progress', startId: 'python-start', endId: 'python-end', tips: [
     'Practice daily, even if just 20 minutes.',
     'Try to build a mini-project every week.',
     'Review yesterday\'s code before starting new tasks.'
@@ -101,6 +101,21 @@ function saveDates(track, start, end) {
 function loadDates(track) {
   return JSON.parse(localStorage.getItem('dates_' + track)) || {start: '', end: ''};
 }
+// --- Clear Python OOP Progress Utility ---
+function clearPythonOOPProgress() {
+  localStorage.removeItem('progress_python-oop');
+  renderChecklist('python-oop');
+  renderProgress('python-oop');
+}
+// Add a temporary button for clearing Python OOP progress
+if (!document.getElementById('clear-python-oop')) {
+  const btn = document.createElement('button');
+  btn.id = 'clear-python-oop';
+  btn.textContent = 'Reset Python OOP Tracker';
+  btn.style.margin = '1rem';
+  btn.onclick = clearPythonOOPProgress;
+  document.body.insertBefore(btn, document.body.firstChild);
+}
 
 // --- Theme Toggle ---
 const themeToggle = document.getElementById('theme-toggle');
@@ -126,10 +141,142 @@ navItems.forEach(item => {
   });
 });
 
-// --- Checklist Rendering & Logic ---
+// --- Schedules for Python OOP and JavaScript ---
+const SCHEDULES = {
+  'python-oop': [
+    {
+      day: 1,
+      title: 'OOP Basics',
+      concept: 'What is OOP, Classes, Objects, __init__ method',
+      practice: 'Create a Car class with attributes (make, model, year). Instantiate two objects and print their details.',
+      resource: 'https://www.w3schools.com/python/python_classes.asp'
+    },
+    {
+      day: 2,
+      title: 'Attributes and Methods',
+      concept: 'Instance vs Class attributes, Instance methods',
+      practice: 'Add methods like start(), stop(), and display_info() to your Car class.',
+      resource: 'https://realpython.com/python3-object-oriented-programming/'
+    },
+    {
+      day: 3,
+      title: 'Encapsulation',
+      concept: 'Private variables (_ / __), Getters & Setters',
+      practice: 'Create a BankAccount class. Use getters and setters to control balance access.',
+      resource: 'https://www.geeksforgeeks.org/encapsulation-in-python/'
+    },
+    {
+      day: 4,
+      title: 'Inheritance',
+      concept: 'Base and Derived Classes, super()',
+      practice: 'Create a Person class, then extend it to a Student class with extra attributes.',
+      resource: 'https://www.w3schools.com/python/python_inheritance.asp'
+    },
+    {
+      day: 5,
+      title: 'Polymorphism',
+      concept: 'Method Overriding, Duck Typing',
+      practice: 'Create Animal, Dog, and Cat classes with a speak() method. Override speak in Dog and Cat.',
+      resource: 'https://www.programiz.com/python-programming/polymorphism'
+    },
+    {
+      day: 6,
+      title: 'Abstraction & Magic Methods',
+      concept: 'Abstract Classes (abc), Dunder methods (__str__, __len__, etc.)',
+      practice: 'Create a Shape abstract class with Circle and Rectangle classes. Use __str__ to print shapes.',
+      resource: 'https://www.geeksforgeeks.org/abstract-classes-in-python/'
+    },
+    {
+      day: 7,
+      title: 'Mini Project + Review',
+      concept: 'Review of all concepts: classes, inheritance, abstraction, etc.',
+      practice: 'Build a school management system with Students, Teachers, and Courses. Apply all OOP principles.',
+      resource: 'https://realpython.com/python3-object-oriented-programming/#building-a-school-system'
+    }
+  ],
+  'javascript': [
+    { day: 1, title: 'Intro to JavaScript', concept: 'What is JS, setup, writing your first script', resource: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Introduction' },
+    { day: 2, title: 'Variables & Data Types', concept: 'let, const, var, strings, numbers, booleans', resource: 'https://www.w3schools.com/js/js_variables.asp' },
+    { day: 3, title: 'Operators', concept: 'Arithmetic, assignment, comparison, logical', resource: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators' },
+    { day: 4, title: 'Conditionals', concept: 'if, else, else if, switch', resource: 'https://www.w3schools.com/js/js_if_else.asp' },
+    { day: 5, title: 'Loops', concept: 'for, while, do...while, break, continue', resource: 'https://www.w3schools.com/js/js_loop_for.asp' },
+    { day: 6, title: 'Functions', concept: 'Function declaration, expression, arrow functions', resource: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions' },
+    { day: 7, title: 'Practice Day 1', concept: 'Build a simple calculator', practice: 'Apply concepts from previous lessons.' },
+    { day: 8, title: 'Arrays', concept: 'Creating arrays, common methods', resource: 'https://www.w3schools.com/js/js_arrays.asp' },
+    { day: 9, title: 'Array Methods', concept: 'map, filter, reduce, forEach, find', resource: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array' },
+    { day: 10, title: 'Objects', concept: 'Object creation, properties, methods', resource: 'https://www.w3schools.com/js/js_objects.asp' },
+    { day: 11, title: 'Object Methods', concept: 'this, constructor functions', resource: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this' },
+    { day: 12, title: 'JSON', concept: 'Parse and stringify data', resource: 'https://www.w3schools.com/js/js_json.asp' },
+    { day: 13, title: 'Practice Day 2', concept: 'Build a user profile object manager', practice: 'Apply concepts from previous lessons.' },
+    { day: 14, title: 'DOM Manipulation', concept: 'getElementById, querySelector, innerHTML', resource: 'https://www.w3schools.com/js/js_htmldom.asp' },
+    { day: 15, title: 'Events', concept: 'onClick, addEventListener', resource: 'https://www.w3schools.com/js/js_events.asp' },
+    { day: 16, title: 'Forms & Validation', concept: 'form inputs, preventDefault, validation', resource: 'https://www.javascripttutorial.net/javascript-dom/javascript-form-validation/' },
+    { day: 17, title: 'Practice Day 3', concept: 'Build an interactive form', practice: 'Apply concepts from previous lessons.' },
+    { day: 18, title: 'ES6 Basics', concept: 'let/const, template literals, default params', resource: 'https://www.freecodecamp.org/news/es6-guide/' },
+    { day: 19, title: 'Destructuring & Spread', concept: 'Object/Array destructuring, spread/rest', resource: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment' },
+    { day: 20, title: 'Modules', concept: 'Import/export syntax', resource: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules' },
+    { day: 21, title: 'Practice Day 4', concept: 'Create a module-based project', practice: 'Apply concepts from previous lessons.' },
+    { day: 22, title: 'OOP in JS - Part 1', concept: 'Object literals, constructor functions', resource: 'https://www.digitalocean.com/community/tutorials/js-object-oriented-programming' },
+    { day: 23, title: 'OOP in JS - Part 2', concept: 'ES6 Classes, inheritance', resource: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes' },
+    { day: 24, title: 'Error Handling', concept: 'try...catch, throw', resource: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling' },
+    { day: 25, title: 'Practice Day 5', concept: 'Create a class-based to-do app', practice: 'Apply concepts from previous lessons.' },
+    { day: 26, title: 'Async JS - Part 1', concept: 'setTimeout, setInterval', resource: 'https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timers' },
+    { day: 27, title: 'Async JS - Part 2', concept: 'Promises', resource: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises' },
+    { day: 28, title: 'Async JS - Part 3', concept: 'Async/Await', resource: 'https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Promises' },
+    { day: 29, title: 'Practice Day 6', concept: 'Build a data-fetching app using async/await', practice: 'Apply concepts from previous lessons.' },
+    { day: 30, title: 'Final Project', concept: 'Build a mini web app using everything you\'ve learned', practice: 'Apply concepts from previous lessons.' }
+  ]
+};
+
+// --- Enhanced Checklist Rendering for Schedules ---
 function renderChecklist(trackKey) {
   const track = TRACKS[trackKey];
   let checklist, checklistElem;
+  // Use schedule if available
+  const schedule = SCHEDULES[trackKey];
+  if (schedule) {
+    checklist = loadProgress(trackKey, Array(schedule.length).fill('').map((_,i)=>({done:false})));
+    checklistElem = document.getElementById(track.checklistId);
+    checklistElem.innerHTML = '';
+    // Get today's day index (0-based)
+    const today = new Date();
+    let startDate = loadDates(trackKey).start;
+    let todayIdx = null;
+    if (startDate) {
+      const start = new Date(startDate);
+      const diff = Math.floor((today - start) / (1000*60*60*24));
+      if (diff >= 0 && diff < schedule.length) todayIdx = diff;
+    }
+    schedule.forEach((item, idx) => {
+      const li = document.createElement('li');
+      li.className = checklist[idx].done ? 'completed' : '';
+      if (todayIdx === idx) li.classList.add('today-task');
+      let html = `<input type="checkbox" ${checklist[idx].done?'checked':''}> <b>Day ${item.day}: ${item.title}</b><br>`;
+      html += `<span>🧠 <b>Concept:</b> ${item.concept}</span><br>`;
+      if (item.practice) html += `<span>📝 <b>Practice:</b> ${item.practice}</span><br>`;
+      if (item.resource) html += `<a href="${item.resource}" target="_blank">Resource</a>`;
+      li.innerHTML = html;
+      li.querySelector('input').addEventListener('change', e => {
+        checklist[idx].done = e.target.checked;
+        saveProgress(trackKey, checklist);
+        renderProgress(trackKey);
+      });
+      checklistElem.appendChild(li);
+    });
+    // Show alert/notification for today's task
+    if (todayIdx !== null && checklistElem.children[todayIdx]) {
+      const todayTask = schedule[todayIdx];
+      setTimeout(() => {
+        alert(`Today's ${track.name} Task:\nDay ${todayTask.day}: ${todayTask.title}\nConcept: ${todayTask.concept}${todayTask.practice ? '\nPractice: ' + todayTask.practice : ''}`);
+        // Optionally, use Notification API
+        if (window.Notification && Notification.permission === 'granted') {
+          new Notification(`Today's ${track.name} Task`, { body: `Day ${todayTask.day}: ${todayTask.title}` });
+        }
+      }, 500);
+    }
+    return;
+  }
+  // ... fallback to original logic for other tracks ...
   if (trackKey === 'ielts') {
     track.sections.forEach(section => {
       checklist = loadProgress('ielts-' + section, Array(track.days/track.sections.length).fill('').map((_,i)=>({text:`Day ${i+1} task`, done:false})));

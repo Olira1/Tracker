@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📘 IELTS Vocabulary Tracker</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body { max-width: 700px; margin: 2rem auto; background: var(--card); border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.07); padding: 2rem; }
+    .vocab-form, .vocab-table { background: var(--bg); border-radius: 10px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .vocab-form label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+    .vocab-form input, .vocab-form textarea { width: 100%; margin-bottom: 1rem; border-radius: 6px; border: 1px solid #ccc; padding: 0.5rem; font-size: 1rem; }
+    .vocab-form button { background: var(--accent); color: #fff; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.2s; }
+    .vocab-form button:hover { background: #3566b8; }
+    .vocab-table table { width: 100%; border-collapse: collapse; }
+    .vocab-table th, .vocab-table td { padding: 0.7rem; border-bottom: 1px solid #eee; text-align: left; }
+    .vocab-table th { background: var(--progress-bg); }
+    .vocab-table tr:last-child td { border-bottom: none; }
+    .vocab-table button { background: var(--accent); color: #fff; border: none; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.95rem; margin-right: 0.3rem; transition: background 0.2s; }
+    .vocab-table button:hover { background: #3566b8; }
+    .search-bar { margin-bottom: 1.5rem; }
+    .search-bar input { width: 100%; padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc; font-size: 1rem; }
+    @media (max-width: 700px) { body { padding: 1rem; } }
+  </style>
+</head>
+<body>
+  <h1>📘 IELTS Vocabulary Tracker</h1>
+  <div style="margin-bottom:1.5rem;">
+    <a href="../notes/notes.html" target="_blank">📝 Open Notes Page</a>
+  </div>
+  <div class="vocab-form">
+    <form id="vocabForm">
+      <label for="word">Word</label>
+      <input type="text" id="word" required>
+      <label for="meaning">Meaning</label>
+      <textarea id="meaning" rows="2" required></textarea>
+      <label for="example">Example Sentence</label>
+      <textarea id="example" rows="2" required></textarea>
+      <button type="submit">Add Word</button>
+    </form>
+  </div>
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search words...">
+  </div>
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+    <button id="toggle-mode">Switch to Flashcard Mode</button>
+    <button id="toggle-dark">🌙</button>
+  </div>
+  <div id="flashcard-container" style="display:none;"></div>
+  <div class="vocab-table">
+    <table id="vocabTable">
+      <thead>
+        <tr>
+          <th>Word</th>
+          <th>Meaning</th>
+          <th>Example</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div style="margin-top:2rem;">
+    <button id="export-json">Export JSON</button>
+    <button id="export-csv">Export CSV</button>
+    <input type="file" id="import-json" accept=".json" style="display:none;">
+    <button id="import-btn">Import JSON</button>
+    <span id="progress-bar" style="float:right;"></span>
+  </div>
+  <script src="vocabulary.js"></script>
+</body>
+</html> 
