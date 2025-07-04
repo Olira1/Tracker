@@ -64,9 +64,17 @@
     <div class="learned-progress-bar" id="learned-progress-bar"></div>
     <span id="learned-progress-label" style="margin-left:1rem;"></span>
   </div>
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.5rem;">
     <button id="toggle-mode">Switch to Flashcard Mode</button>
+    <button id="flashcard-random">Random Order</button>
+    <button id="flashcard-quiz">Quiz Mode</button>
     <button id="toggle-dark">🌙</button>
+    <button id="export-xlsx">Export Excel</button>
+    <input type="file" id="import-xlsx" accept=".xlsx" style="display:none;">
+    <button id="import-xlsx-btn">Import Excel</button>
+    <button id="backup-btn">Backup</button>
+    <button id="restore-btn">Restore</button>
+    <button id="qr-btn">QR Code</button>
   </div>
   <div id="flashcard-container" style="display:none;"></div>
   <div class="vocab-table">
@@ -97,6 +105,13 @@
     <button id="import-btn">Import JSON</button>
     <span id="progress-bar" style="float:right;"></span>
   </div>
+  <div id="qr-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); align-items:center; justify-content:center; z-index:10000;">
+    <div style="background:#fff; padding:2rem; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.12); text-align:center;">
+      <div id="qr-code"></div>
+      <button id="close-qr">Close</button>
+    </div>
+  </div>
+  <div id="analytics-panel" class="analytics-panel" style="margin-bottom:1.5rem;"></div>
   <script src="vocabulary.js"></script>
 </body>
 </html> 

@@ -215,8 +215,16 @@ body.vocab {
 .vocab-form button:hover {
   background: #3566b8;
 }
+.vocab-table {
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
 .vocab-table table {
   width: 100%;
+  min-width: 900px;
   border-collapse: collapse;
 }
 .vocab-table th, .vocab-table td {
@@ -254,8 +262,15 @@ body.vocab {
   border: 1px solid #ccc;
   font-size: 1rem;
 }
+@media (max-width: 1000px) {
+  .vocab-table table {
+    min-width: 700px;
+  }
+}
 @media (max-width: 700px) {
-  body.vocab { padding: 1rem; }
+  .vocab-table table {
+    min-width: 500px;
+  }
 }
 .learned-progress-bar-container {
   background: var(--progress-bg);
@@ -395,4 +410,23 @@ body.dark table, body.vocab.dark table {
 }
 body.dark th, body.vocab.dark th {
   background: #181a1b;
+}
+
+.analytics-panel {
+  background: #f8f8fa;
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  margin-bottom: 1.5rem;
+  font-size: 1.05rem;
+}
+#qr-modal {
+  display: flex;
+}
+#qr-modal[style*='display:none'] {
+  display: none !important;
+}
+#qr-code canvas {
+  margin: 0 auto;
+  display: block;
 } 

@@ -174,8 +174,8 @@ form.onsubmit = e => {
   renderTable(searchInput.value);
   form.reset();
 };
-searchInput.oninput = () => { renderTable(searchInput.value); showDailyWord(); };
-sortSelect.onchange = () => { renderTable(searchInput.value); showDailyWord(); };
+searchInput.oninput = () => { renderTable(searchInput.value); showDailyWord(); showAnalytics(); };
+sortSelect.onchange = () => { renderTable(searchInput.value); showDailyWord(); showAnalytics(); };
 // Export JSON
 const exportJsonBtn = document.getElementById('export-json');
 exportJsonBtn.onclick = () => {
@@ -246,53 +246,122 @@ const toggleModeBtn = document.getElementById('toggle-mode');
 const flashcardContainer = document.getElementById('flashcard-container');
 let flashcardIdx = 0;
 let flashcardShowAnswer = false;
+// SheetJS and QRCode CDN
+const sheetjsScript = document.createElement('script');
+sheetjsScript.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+document.head.appendChild(sheetjsScript);
+const qrScript = document.createElement('script');
+qrScript.src = 'https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js';
+document.head.appendChild(qrScript);
+// --- Flashcard Random/Quiz Mode ---
+const randomBtn = document.getElementById('flashcard-random');
+const quizBtn = document.getElementById('flashcard-quiz');
+let flashcardOrder = [];
+let quizMode = false;
+randomBtn.onclick = () => {
+  if (!vocabList.length) return;
+  flashcardOrder = Array.from({length: vocabList.length}, (_,i)=>i);
+  for (let i = flashcardOrder.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [flashcardOrder[i], flashcardOrder[j]] = [flashcardOrder[j], flashcardOrder[i]];
+  }
+  setMode(true);
+};
+quizBtn.onclick = () => {
+  quizMode = true;
+  setMode(true);
+};
 function showFlashcard(idx) {
   if (!vocabList.length) {
     flashcardContainer.innerHTML = '<div style="padding:2rem;">No words yet.</div>';
     return;
   }
-  const v = vocabList[idx];
-  flashcardContainer.innerHTML = `
-    <div class="flashcard">
-      <div class="flashcard-front" style="${flashcardShowAnswer?'display:none;':''}">
-        <div class="flashcard-word">${v.word} <button class="audio" title="Play pronunciation">🔊</button></div>
-        <button id="show-answer">Show Answer</button>
+  let v, realIdx;
+  if (flashcardOrder.length) {
+    realIdx = flashcardOrder[idx];
+    v = vocabList[realIdx];
+  } else {
+    realIdx = idx;
+    v = vocabList[idx];
+  }
+  if (quizMode) {
+    flashcardContainer.innerHTML = `
+      <div class="flashcard">
+        <div class="flashcard-word">${v.word}</div>
+        <input id="quiz-answer" placeholder="Type the meaning..." style="width:90%;margin:1rem 0;">
+        <button id="check-quiz">Check</button>
+        <div id="quiz-feedback"></div>
+        <div class="flashcard-controls">
+          <button id="prev-card">Previous</button>
+          <span>${idx+1} / ${vocabList.length}</span>
+          <button id="next-card">Next</button>
+        </div>
       </div>
-      <div class="flashcard-back" style="${flashcardShowAnswer?'':'display:none;'}">
-        <div><b>Meaning:</b> ${v.meaning}</div>
-        <div><b>Example:</b> ${v.example}</div>
-        <div><b>Synonyms:</b> ${(v.synonyms||[]).map(s=>`<span class='vocab-synonym'>${s}</span>`).join('')}</div>
-        <div><b>Antonyms:</b> ${(v.antonyms||[]).map(a=>`<span class='vocab-antonym'>${a}</span>`).join('')}</div>
-        <div><b>Translations:</b> ${v.translationsDisplay||''}</div>
-        <div><b>Tags:</b> ${(v.tags||[]).map(tag=>`<span class='vocab-tag'>${tag}</span>`).join('')}</div>
-        <div><b>Learned:</b> ${v.learned ? '✔️' : '❌'}</div>
-        <div><b>Note:</b> <span class="vocab-note">${v.note||''}</span></div>
-        <button id="hide-answer">Hide</button>
+    `;
+    document.getElementById('check-quiz').onclick = () => {
+      const ans = document.getElementById('quiz-answer').value.trim().toLowerCase();
+      const correct = v.meaning.trim().toLowerCase();
+      document.getElementById('quiz-feedback').textContent = ans === correct ? '✅ Correct!' : `❌ Correct: ${v.meaning}`;
+    };
+  } else {
+    flashcardContainer.innerHTML = `
+      <div class="flashcard">
+        <div class="flashcard-front" style="${flashcardShowAnswer?'display:none;':''}">
+          <div class="flashcard-word">${v.word} <button class="audio" title="Play pronunciation">🔊</button></div>
+          <button id="show-answer">Show Answer</button>
+        </div>
+        <div class="flashcard-back" style="${flashcardShowAnswer?'':'display:none;'}">
+          <div><b>Meaning:</b> ${v.meaning}</div>
+          <div><b>Example:</b> ${v.example}</div>
+          <div><b>Synonyms:</b> ${(v.synonyms||[]).map(s=>`<span class='vocab-synonym'>${s}</span>`).join('')}</div>
+          <div><b>Antonyms:</b> ${(v.antonyms||[]).map(a=>`<span class='vocab-antonym'>${a}</span>`).join('')}</div>
+          <div><b>Translations:</b> ${v.translationsDisplay||''}</div>
+          <div><b>Tags:</b> ${(v.tags||[]).map(tag=>`<span class='vocab-tag'>${tag}</span>`).join('')}</div>
+          <div><b>Learned:</b> ${v.learned ? '✔️' : '❌'}</div>
+          <div><b>Note:</b> <span class="vocab-note">${v.note||''}</span></div>
+          <button id="hide-answer">Hide</button>
+        </div>
+        <div class="flashcard-controls">
+          <button id="prev-card">Previous</button>
+          <span>${idx+1} / ${vocabList.length}</span>
+          <button id="next-card">Next</button>
+        </div>
       </div>
-      <div class="flashcard-controls">
-        <button id="prev-card">Previous</button>
-        <span>${idx+1} / ${vocabList.length}</span>
-        <button id="next-card">Next</button>
-      </div>
-    </div>
-  `;
-  flashcardContainer.querySelector('.audio').onclick = () => {
-    if ('speechSynthesis' in window) {
-      const utter = new SpeechSynthesisUtterance(v.word);
-      utter.lang = 'en-US';
-      window.speechSynthesis.speak(utter);
+    `;
+    flashcardContainer.querySelector('.audio').onclick = () => {
+      if ('speechSynthesis' in window) {
+        const utter = new SpeechSynthesisUtterance(v.word);
+        utter.lang = 'en-US';
+        window.speechSynthesis.speak(utter);
+      } else {
+        alert('Audio not supported in this browser.');
+      }
+    };
+    document.getElementById('show-answer').onclick = () => { flashcardShowAnswer = true; showFlashcard(idx); };
+    document.getElementById('hide-answer').onclick = () => { flashcardShowAnswer = false; showFlashcard(idx); };
+  }
+  document.getElementById('prev-card').onclick = () => {
+    if (flashcardOrder.length) {
+      flashcardIdx = (flashcardIdx-1+flashcardOrder.length)%flashcardOrder.length;
     } else {
-      alert('Audio not supported in this browser.');
+      flashcardIdx = (flashcardIdx-1+vocabList.length)%vocabList.length;
     }
+    flashcardShowAnswer=false; showFlashcard(flashcardIdx);
   };
-  document.getElementById('show-answer').onclick = () => { flashcardShowAnswer = true; showFlashcard(flashcardIdx); };
-  document.getElementById('hide-answer').onclick = () => { flashcardShowAnswer = false; showFlashcard(flashcardIdx); };
-  document.getElementById('prev-card').onclick = () => { flashcardIdx = (flashcardIdx-1+vocabList.length)%vocabList.length; flashcardShowAnswer=false; showFlashcard(flashcardIdx); };
-  document.getElementById('next-card').onclick = () => { flashcardIdx = (flashcardIdx+1)%vocabList.length; flashcardShowAnswer=false; showFlashcard(flashcardIdx); };
+  document.getElementById('next-card').onclick = () => {
+    if (flashcardOrder.length) {
+      flashcardIdx = (flashcardIdx+1)%flashcardOrder.length;
+    } else {
+      flashcardIdx = (flashcardIdx+1)%vocabList.length;
+    }
+    flashcardShowAnswer=false; showFlashcard(flashcardIdx);
+  };
 }
 let inFlashcardMode = false;
 function setMode(flashcard) {
   inFlashcardMode = flashcard;
+  quizMode = false;
+  flashcardOrder = [];
   document.querySelector('.vocab-table').style.display = flashcard ? 'none' : '';
   document.querySelector('.search-bar').style.display = flashcard ? 'none' : '';
   document.getElementById('vocabForm').parentElement.style.display = flashcard ? 'none' : '';
@@ -335,10 +404,153 @@ function showDailyWord() {
   };
 }
 
+// --- Import/Export Excel ---
+const exportXlsxBtn = document.getElementById('export-xlsx');
+const importXlsxBtn = document.getElementById('import-xlsx-btn');
+const importXlsxInput = document.getElementById('import-xlsx');
+exportXlsxBtn.onclick = () => {
+  if (!window.XLSX) return alert('Excel library not loaded yet.');
+  const ws = XLSX.utils.json_to_sheet(vocabList.map(v => ({
+    Word: v.word,
+    Meaning: v.meaning,
+    Example: v.example,
+    Synonyms: (v.synonyms||[]).join(', '),
+    Antonyms: (v.antonyms||[]).join(', '),
+    Translations: v.translationsRaw||'',
+    Tags: (v.tags||[]).join(', '),
+    Learned: v.learned ? 'Yes' : '',
+    Note: v.note||''
+  })));
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Vocabulary');
+  XLSX.writeFile(wb, 'vocabulary.xlsx');
+};
+importXlsxBtn.onclick = () => importXlsxInput.click();
+importXlsxInput.onchange = e => {
+  if (!window.XLSX) return alert('Excel library not loaded yet.');
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = evt => {
+    const data = new Uint8Array(evt.target.result);
+    const workbook = XLSX.read(data, {type: 'array'});
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(sheet);
+    rows.forEach(row => {
+      vocabList.push({
+        word: row.Word,
+        meaning: row.Meaning,
+        example: row.Example,
+        synonyms: (row.Synonyms||'').split(',').map(s=>s.trim()).filter(Boolean),
+        antonyms: (row.Antonyms||'').split(',').map(a=>a.trim()).filter(Boolean),
+        translations: parseTranslations(row.Translations||''),
+        translationsRaw: row.Translations||'',
+        translationsDisplay: translationsToDisplay(parseTranslations(row.Translations||'')),
+        tags: (row.Tags||'').split(',').map(t=>t.trim()).filter(Boolean),
+        learned: (row.Learned||'').toLowerCase().startsWith('y'),
+        note: row.Note||''
+      });
+    });
+    saveVocab();
+    renderTable(searchInput.value);
+    showDailyWord();
+    alert('Import successful!');
+  };
+  reader.readAsArrayBuffer(file);
+};
+// --- Backup/Restore ---
+const backupBtn = document.getElementById('backup-btn');
+const restoreBtn = document.getElementById('restore-btn');
+backupBtn.onclick = () => {
+  const blob = new Blob([JSON.stringify(vocabList, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'vocab-backup.json';
+  a.click();
+  URL.revokeObjectURL(url);
+};
+restoreBtn.onclick = () => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = evt => {
+      try {
+        const imported = JSON.parse(evt.target.result);
+        if (!Array.isArray(imported)) throw new Error('Invalid format');
+        vocabList = imported;
+        saveVocab();
+        renderTable(searchInput.value);
+        showDailyWord();
+        alert('Restore successful!');
+      } catch (err) {
+        alert('Restore failed: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+};
+// --- QR Code ---
+const qrBtn = document.getElementById('qr-btn');
+const qrModal = document.getElementById('qr-modal');
+const qrCodeDiv = document.getElementById('qr-code');
+const closeQrBtn = document.getElementById('close-qr');
+qrBtn.onclick = () => {
+  qrModal.style.display = 'flex';
+  qrCodeDiv.innerHTML = '';
+  if (window.QRCode) {
+    new QRCode(qrCodeDiv, {
+      text: JSON.stringify(vocabList),
+      width: 220,
+      height: 220
+    });
+  } else {
+    qrCodeDiv.textContent = 'QR library not loaded yet.';
+  }
+};
+closeQrBtn.onclick = () => { qrModal.style.display = 'none'; };
+// --- Analytics ---
+const analyticsPanel = document.getElementById('analytics-panel');
+function showAnalytics() {
+  if (!vocabList.length) { analyticsPanel.innerHTML = ''; return; }
+  // Most frequent tags
+  const tagCounts = {};
+  vocabList.forEach(v => (v.tags||[]).forEach(t => tagCounts[t] = (tagCounts[t]||0)+1));
+  const topTags = Object.entries(tagCounts).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  // Average word length
+  const avgLen = (vocabList.reduce((sum,v)=>sum+v.word.length,0)/vocabList.length).toFixed(2);
+  // Days active
+  let days = 0;
+  try {
+    const first = JSON.parse(localStorage.getItem('vocab_first_date'));
+    if (first) {
+      const diff = (Date.now() - new Date(first))/86400000;
+      days = Math.max(1, Math.round(diff));
+    }
+  } catch(e){}
+  if (!localStorage.getItem('vocab_first_date') && vocabList.length) {
+    localStorage.setItem('vocab_first_date', new Date().toISOString());
+    days = 1;
+  }
+  analyticsPanel.innerHTML = `
+    <b>Analytics:</b><br>
+    <b>Most Frequent Tags:</b> ${topTags.map(([t,c])=>`<span class='vocab-tag'>${t} (${c})</span>`).join(' ')}<br>
+    <b>Average Word Length:</b> ${avgLen}<br>
+    <b>Days Active:</b> ${days}<br>
+    <b>Total Words:</b> ${vocabList.length}
+  `;
+}
+
 // Initial load
 loadVocab();
 renderTable();
 updateProgress();
 updateLearnedProgress();
 showDailyWord();
+showAnalytics();
  
